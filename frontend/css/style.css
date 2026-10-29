@@ -1,0 +1,98 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  background-color: #1a1c23;
+  color: #fff;
+  font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+#game-container {
+  position: relative;
+  width: 945px;
+  height: 750px;
+  background-color: #2b3a42;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 0 4px #513829, 0 0 0 8px #2b1d14;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#gameCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  display: block;
+}
+
+/* Retro Pixel Art Panel Theme */
+.pixel-panel {
+  background: rgba(43, 30, 22, 0.92);
+  border: 3px solid #8f563b;
+  box-shadow: inset 2px 2px 0px #d9a066, inset -2px -2px 0px #3f281e, 0 4px 12px rgba(0,0,0,0.6);
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+}
+
+/* Pixel Buttons */
+.pixel-btn {
+  background: #694f38;
+  color: #fcebd9;
+  border: 2px solid #a3724c;
+  padding: 6px 12px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: inset 1px 1px 0 #b3855c, inset -1px -1px 0 #3a2215, 0 2px 4px rgba(0,0,0,0.4);
+  transition: all 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pixel-btn:hover {
+  background: #7d5f44;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.pixel-btn:active {
+  background: #4a3423;
+  transform: translateY(1px);
+  box-shadow: inset 1px 1px 0 #2b170c, inset -1px -1px 0 #8f563b;
+}
+
+.pixel-btn.primary {
+  background: #397b44;
+  border-color: #5bb36b;
+  color: #ffffff;
+  box-shadow: inset 1px 1px 0 #7dd88e, inset -1px -1px 0 #1b4423, 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.pixel-btn.primary:hover {
+  background: #438f4d;
+}
+
+.pixel-btn.danger {
+  background: #9b2f2f;
+  border-color: #c94c4c;
+}
+
+.hidden {
+  display: none !important;
+}

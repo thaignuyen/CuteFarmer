@@ -1,0 +1,248 @@
+{
+  "player": {
+    "name": "Hoàng Hiệp Sĩ",
+    "x": 218.6005711999997,
+    "y": 370.0556024000006,
+    "direction": "up",
+    "hp": 100,
+    "max_hp": 100,
+    "energy": 100,
+    "max_energy": 100,
+    "gold": 85,
+    "level": 1,
+    "xp": 0,
+    "equipped_slot": 0
+  },
+  "inventory": [
+    {
+      "id": "tool_hoe",
+      "name": "Cuốc Nông Nghiệp",
+      "category": "tool",
+      "icon": "tool_hoe",
+      "count": 1,
+      "description": "Dùng để xới đất trồng trọt.",
+      "buy_price": 0,
+      "sell_price": 0
+    },
+    {
+      "id": "tool_watering_can",
+      "name": "Bình Tưới Nước",
+      "category": "tool",
+      "icon": "tool_watering_can",
+      "count": 1,
+      "description": "Tưới nước giúp cây mau lớn.",
+      "buy_price": 0,
+      "sell_price": 0
+    },
+    {
+      "id": "tool_axe",
+      "name": "Rìu Đốn Củi",
+      "category": "tool",
+      "icon": "tool_axe",
+      "count": 1,
+      "description": "Dùng để đốn củi và dọn vật cản.",
+      "buy_price": 0,
+      "sell_price": 0
+    },
+    {
+      "id": "tool_sword",
+      "name": "Kiếm Rỉ Sét",
+      "category": "tool",
+      "icon": "tool_sword",
+      "count": 1,
+      "description": "Vũ khí cơ bản để tiêu diệt quái vật.",
+      "buy_price": 0,
+      "sell_price": 0
+    },
+    {
+      "id": "tool_fishing_rod",
+      "name": "Cần Câu Tre",
+      "category": "tool",
+      "icon": "tool_fishing_rod",
+      "count": 1,
+      "description": "Dùng để câu cá tại bến sông.",
+      "buy_price": 0,
+      "sell_price": 0
+    },
+    {
+      "id": "seed_tomato",
+      "name": "Hạt Cà Chua",
+      "category": "seed",
+      "icon": "seed_tomato",
+      "count": 6,
+      "description": "Hạt giống cà chua chín mọng.",
+      "buy_price": 15,
+      "sell_price": 8
+    },
+    {
+      "id": "seed_corn",
+      "name": "Hạt Bắp Ngô",
+      "category": "seed",
+      "icon": "seed_corn",
+      "count": 3,
+      "description": "Hạt giống bắp ngô ngọt.",
+      "buy_price": 25,
+      "sell_price": 12
+    },
+    {
+      "id": "potion_health",
+      "name": "Bình Máu Nhỏ",
+      "category": "potion",
+      "icon": "potion_health",
+      "count": 2,
+      "description": "Hồi phục 50 HP.",
+      "buy_price": 30,
+      "sell_price": 15
+    }
+  ],
+  "farm_plots": [
+    {
+      "id": 1,
+      "tile_x": 25,
+      "tile_y": 95,
+      "is_tilled": true,
+      "is_watered": false,
+      "seed_type": "seed_tomato",
+      "stage": 3,
+      "max_stage": 3,
+      "grow_time_seconds": 15
+    },
+    {
+      "id": 2,
+      "tile_x": 45,
+      "tile_y": 95,
+      "is_tilled": true,
+      "is_watered": false,
+      "seed_type": "seed_corn",
+      "stage": 2,
+      "max_stage": 3,
+      "grow_time_seconds": 15
+    },
+    {
+      "id": 3,
+      "tile_x": 65,
+      "tile_y": 95,
+      "is_tilled": true,
+      "is_watered": false,
+      "seed_type": "seed_carrot",
+      "stage": 3,
+      "max_stage": 3,
+      "grow_time_seconds": 15
+    },
+    {
+      "id": 4,
+      "tile_x": 25,
+      "tile_y": 115,
+      "is_tilled": true,
+      "is_watered": false,
+      "seed_type": null,
+      "stage": 0,
+      "max_stage": 3,
+      "grow_time_seconds": 15
+    },
+    {
+      "id": 5,
+      "tile_x": 45,
+      "tile_y": 115,
+      "is_tilled": true,
+      "is_watered": false,
+      "seed_type": null,
+      "stage": 0,
+      "max_stage": 3,
+      "grow_time_seconds": 15
+    },
+    {
+      "id": 6,
+      "tile_x": 65,
+      "tile_y": 115,
+      "is_tilled": false,
+      "is_watered": false,
+      "seed_type": null,
+      "stage": 0,
+      "max_stage": 3,
+      "grow_time_seconds": 15
+    }
+  ],
+  "quests": [
+    {
+      "id": "q1_till",
+      "title": "Khai Khẩn Đất Đai",
+      "description": "Trang bị Cuốc và xới tơi xốp ít nhất 2 ô đất trong vườn.",
+      "reward_gold": 30,
+      "reward_xp": 50,
+      "reward_item": "seed_tomato",
+      "target_type": "till",
+      "target_count": 2,
+      "current_count": 1,
+      "is_completed": false,
+      "is_claimed": false
+    },
+    {
+      "id": "q2_plant_water",
+      "title": "Gieo Mầm Sự Sống",
+      "description": "Gieo hạt giống và dùng Bình tưới nước cho cây trồng.",
+      "reward_gold": 40,
+      "reward_xp": 60,
+      "reward_item": "potion_energy",
+      "target_type": "water",
+      "target_count": 2,
+      "current_count": 0,
+      "is_completed": false,
+      "is_claimed": false
+    },
+    {
+      "id": "q3_harvest",
+      "title": "Vụ Mùa Bội Thu",
+      "description": "Chăm sóc và thu hoạch 2 luống nông sản chín mọng.",
+      "reward_gold": 50,
+      "reward_xp": 80,
+      "reward_item": null,
+      "target_type": "harvest",
+      "target_count": 2,
+      "current_count": 0,
+      "is_completed": false,
+      "is_claimed": false
+    },
+    {
+      "id": "q4_merchant",
+      "title": "Giao Thương Thị Trấn",
+      "description": "Đem nông sản hoặc cá ra sạp chợ trung tâm bán lấy tiền.",
+      "reward_gold": 60,
+      "reward_xp": 100,
+      "reward_item": null,
+      "target_type": "sell",
+      "target_count": 1,
+      "current_count": 0,
+      "is_completed": false,
+      "is_claimed": false
+    },
+    {
+      "id": "q5_slime_hunter",
+      "title": "Bảo Vệ Đàn Gà",
+      "description": "Dùng Kiếm tiêu diệt 2 quái Slime xanh đang rình rập quanh làng.",
+      "reward_gold": 80,
+      "reward_xp": 150,
+      "reward_item": "potion_health",
+      "target_type": "kill_slime",
+      "target_count": 2,
+      "current_count": 0,
+      "is_completed": false,
+      "is_claimed": false
+    },
+    {
+      "id": "q6_angler",
+      "title": "Thú Vui Câu Cá",
+      "description": "Đến bến cầu gỗ thả cần và câu được ít nhất 1 con cá tươi.",
+      "reward_gold": 50,
+      "reward_xp": 70,
+      "reward_item": null,
+      "target_type": "fish",
+      "target_count": 1,
+      "current_count": 0,
+      "is_completed": false,
+      "is_claimed": false
+    }
+  ],
+  "world_time": 8.0,
+  "day": 3
+}

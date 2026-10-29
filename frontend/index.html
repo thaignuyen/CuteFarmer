@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cute Fantasy - Nông Trại & Phiêu Lưu Làng Quê</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/ui.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Be+Vietnam+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="game-container">
+    <!-- Main Render Canvas -->
+    <canvas id="gameCanvas" width="945" height="750"></canvas>
+
+    <!-- Top Left: Player Status Bar -->
+    <div id="player-hud" class="pixel-panel">
+      <div class="avatar-box">
+        <div class="avatar-icon"></div>
+        <div class="level-badge" id="hud-level">Lv.1</div>
+      </div>
+      <div class="status-bars">
+        <div class="character-name" id="hud-player-name">Hoàng Hiệp Sĩ</div>
+        <!-- Health Bar -->
+        <div class="bar-container hp-bar">
+          <div class="bar-fill" id="hud-hp-fill" style="width: 100%;"></div>
+          <span class="bar-text" id="hud-hp-text">100 / 100 HP</span>
+        </div>
+        <!-- Energy Bar -->
+        <div class="bar-container energy-bar">
+          <div class="bar-fill" id="hud-energy-fill" style="width: 100%;"></div>
+          <span class="bar-text" id="hud-energy-text">100 / 100 Thể Lực</span>
+        </div>
+        <!-- EXP Bar -->
+        <div class="bar-container xp-bar">
+          <div class="bar-fill" id="hud-xp-fill" style="width: 0%;"></div>
+          <span class="bar-text" id="hud-xp-text">0 / 100 XP</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Right: Time, Gold & Quick Buttons -->
+    <div id="top-right-hud">
+      <div class="time-panel pixel-panel">
+        <div class="calendar-info">
+          <span class="day-text" id="hud-day">Ngày 1</span>
+          <span class="clock-icon">☀️</span>
+          <span class="clock-text" id="hud-time">08:00 AM</span>
+        </div>
+        <div class="gold-box">
+          <span class="coin-icon">💰</span>
+          <span class="gold-text" id="hud-gold">100 Vàng</span>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <button class="pixel-btn" id="btn-toggle-quest" title="Danh sách nhiệm vụ (Q)">📜 Nhiệm Vụ [Q]</button>
+        <button class="pixel-btn" id="btn-toggle-inventory" title="Mở túi đồ (I)">🎒 Túi Đồ [I]</button>
+        <button class="pixel-btn" id="btn-save-game" title="Lưu game lên server">💾 Lưu Game</button>
+        <button class="pixel-btn" id="btn-toggle-help" title="Hướng dẫn điều khiển (H)">❓ Hướng Dẫn [H]</button>
+      </div>
+    </div>
+
+    <!-- Interactive Prompt Floating ([E] Tương tác) -->
+    <div id="interaction-prompt" class="hidden">
+      <span class="key-badge">E</span>
+      <span class="prompt-text" id="prompt-label">Tương tác</span>
+    </div>
+
+    <!-- Bottom Center: Hotbar (8 Slots) -->
+    <div id="hotbar-container">
+      <div class="hotbar pixel-panel">
+        <div class="hotbar-slot active" data-slot="0"><span class="slot-num">1</span><div class="slot-icon icon-hoe"></div><span class="item-count"></span></div>
+        <div class="hotbar-slot" data-slot="1"><span class="slot-num">2</span><div class="slot-icon icon-water"></div><span class="item-count"></span></div>
+        <div class="hotbar-slot" data-slot="2"><span class="slot-num">3</span><div class="slot-icon icon-axe"></div><span class="item-count"></span></div>
+        <div class="hotbar-slot" data-slot="3"><span class="slot-num">4</span><div class="slot-icon icon-sword"></div><span class="item-count"></span></div>
+        <div class="hotbar-slot" data-slot="4"><span class="slot-num">5</span><div class="slot-icon icon-rod"></div><span class="item-count"></span></div>
+        <div class="hotbar-slot" data-slot="5"><span class="slot-num">6</span><div class="slot-icon icon-seed-tomato"></div><span class="item-count">5</span></div>
+        <div class="hotbar-slot" data-slot="6"><span class="slot-num">7</span><div class="slot-icon icon-seed-corn"></div><span class="item-count">3</span></div>
+        <div class="hotbar-slot" data-slot="7"><span class="slot-num">8</span><div class="slot-icon icon-potion-hp"></div><span class="item-count">2</span></div>
+      </div>
+      <div id="active-item-name" class="active-item-tooltip">Cuốc Nông Nghiệp - Bấm [Space] hoặc Click chuột để xới đất</div>
+    </div>
+
+    <!-- Toast Notifications (Góc dưới trái) -->
+    <div id="toast-container"></div>
+
+    <!-- Modal: Dialogue System -->
+    <div id="dialogue-modal" class="modal-overlay hidden">
+      <div class="dialogue-box pixel-panel">
+        <div class="dialogue-header">
+          <div class="npc-portrait" id="dialogue-portrait"></div>
+          <div class="npc-info">
+            <h3 id="dialogue-npc-name">Bác Ba Nông Dân</h3>
+            <span class="npc-role" id="dialogue-npc-role">Người quản lý cánh đồng</span>
+          </div>
+          <button class="close-btn" id="btn-close-dialogue">✕</button>
+        </div>
+        <div class="dialogue-body">
+          <p id="dialogue-text">Chào mừng cháu đến với ngôi làng thanh bình! Cháu đã sẵn sàng làm quen với công việc đồng áng chưa?</p>
+        </div>
+        <div class="dialogue-actions" id="dialogue-actions">
+          <button class="pixel-btn primary" id="dialogue-btn-next">Tiếp tục [E]</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Market Shop -->
+    <div id="shop-modal" class="modal-overlay hidden">
+      <div class="shop-box pixel-panel">
+        <div class="modal-header">
+          <h2>🏪 Sạp Chợ Phiên Làng Quê</h2>
+          <button class="close-btn" id="btn-close-shop">✕</button>
+        </div>
+        <div class="shop-tabs">
+          <button class="tab-btn active" id="tab-shop-buy">Mua Hàng (Hạt giống, Nước tăng lực)</button>
+          <button class="tab-btn" id="tab-shop-sell">Bán Hàng (Nông sản, Cá, Vật phẩm)</button>
+        </div>
+        <div class="shop-content">
+          <div class="shop-grid" id="shop-items-container">
+            <!-- Render dynamically -->
+          </div>
+        </div>
+        <div class="shop-footer">
+          <div class="shop-balance">Ví tiền: <span id="shop-gold-display">100</span> 💰</div>
+          <div class="shop-hint">Nhấp vào vật phẩm để giao dịch tức thì!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Quest Tracker -->
+    <div id="quest-modal" class="modal-overlay hidden">
+      <div class="quest-box pixel-panel">
+        <div class="modal-header">
+          <h2>📜 Bảng Nhiệm Vụ Làng</h2>
+          <button class="close-btn" id="btn-close-quest">✕</button>
+        </div>
+        <div class="quest-list" id="quest-list-container">
+          <!-- Render dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Full Inventory -->
+    <div id="inventory-modal" class="modal-overlay hidden">
+      <div class="inventory-box pixel-panel">
+        <div class="modal-header">
+          <h2>🎒 Túi Đồ Hành Trang</h2>
+          <button class="close-btn" id="btn-close-inventory">✕</button>
+        </div>
+        <div class="inventory-body">
+          <div class="inv-grid" id="full-inventory-grid"></div>
+          <div class="item-detail-panel">
+            <h4 id="inv-detail-name">Chọn một vật phẩm</h4>
+            <div class="inv-detail-category" id="inv-detail-type">---</div>
+            <p id="inv-detail-desc">Xem thông tin và công dụng chi tiết tại đây.</p>
+            <div class="inv-actions">
+              <button class="pixel-btn primary hidden" id="inv-btn-use">Sử Dụng</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Controls & Guide -->
+    <div id="help-modal" class="modal-overlay hidden">
+      <div class="help-box pixel-panel">
+        <div class="modal-header">
+          <h2>🌾 Sổ Tay Hướng Dẫn</h2>
+          <button class="close-btn" id="btn-close-help">✕</button>
+        </div>
+        <div class="help-content">
+          <div class="help-section">
+            <h3>🎮 Phím Di Chuyển & Điều Khiển:</h3>
+            <ul>
+              <li><b>W, A, S, D</b> hoặc <b>Phím Mũi Tên</b>: Di chuyển 4 hướng</li>
+              <li><b>Phím Cách (Space)</b> hoặc <b>Click Chuột</b>: Sử dụng công cụ đang chọn (Cuốc đất, Tưới nước, Chặt cây, Chém kiếm)</li>
+              <li><b>Phím E</b>: Tương tác với NPC, Mở Sạp Chợ, Nghỉ ngơi tại nhà, Nhặt đồ</li>
+              <li><b>Phím 1 tới 8</b>: Đổi nhanh công cụ/vật phẩm trên thanh Hotbar</li>
+              <li><b>Phím Q</b>: Mở danh sách Nhiệm vụ</li>
+              <li><b>Phím I</b>: Mở Túi đồ</li>
+            </ul>
+          </div>
+          <div class="help-section">
+            <h3>🌱 Nghiệp Vụ Nông Trại:</h3>
+            <ol>
+              <li>Trang bị <b>Cuốc (Phím 1)</b> và xới đất tại khu vườn góc trên bên trái.</li>
+              <li>Chọn <b>Hạt Giống (Phím 6 hoặc 7)</b> bấm vào ô đất đã xới để gieo trồng.</li>
+              <li>Dùng <b>Bình Tưới (Phím 2)</b> tưới nước để cây bắt đầu lớn.</li>
+              <li>Cây trồng sẽ lớn dần, khi quả chín bấm vào để thu hoạch!</li>
+              <li>Đem nông sản ra <b>Sạp Chợ (Market Stalls)</b> bán lấy tiền Vàng để mở rộng nông trại.</li>
+            </ol>
+          </div>
+          <div class="help-section">
+            <h3>🎣 Câu Cá & Đánh Quái:</h3>
+            <ul>
+              <li>Cầm <b>Cần Câu (Phím 5)</b> ra bến cầu gỗ để buông câu bắt cá chép.</li>
+              <li>Cầm <b>Kiếm (Phím 4)</b> ra vùng bìa rừng trên để tiêu diệt lũ Slime xanh quấy phá.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="help-footer">
+          <button class="pixel-btn primary" id="btn-got-it">Đã Hiểu, Bắt Đầu Chơi!</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fishing Minigame Overlay -->
+    <div id="fishing-overlay" class="modal-overlay hidden">
+      <div class="fishing-gauge pixel-panel">
+        <h3>🎣 Đang Câu Cá...</h3>
+        <p>Bấm [Space] liên tục để giữ con cá trong thanh xanh lá!</p>
+        <div class="gauge-bar-outer">
+          <div class="target-zone" id="fishing-target-zone"></div>
+          <div class="fish-marker" id="fishing-fish-marker">🐟</div>
+        </div>
+        <div class="fishing-progress-outer">
+          <div class="fishing-progress-fill" id="fishing-progress-fill"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio, Engine, Systems, UI & Game Scripts -->
+  <script src="js/engine/sound.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/engine/input.js"></script>
+  <script src="js/engine/camera.js"></script>
+  <script src="js/engine/spritesheet.js"></script>
+  <script src="js/world/collisions.js"></script>
+  <script src="js/world/map.js"></script>
+  <script src="js/entities/player.js"></script>
+  <script src="js/entities/animal.js"></script>
+  <script src="js/entities/enemy.js"></script>
+  <script src="js/entities/npc.js"></script>
+  <script src="js/systems/farming.js"></script>
+  <script src="js/systems/combat.js"></script>
+  <script src="js/systems/fishing.js"></script>
+  <script src="js/systems/inventory.js"></script>
+  <script src="js/systems/quest.js"></script>
+  <script src="js/ui/toast.js"></script>
+  <script src="js/ui/hud.js"></script>
+  <script src="js/ui/dialogue.js"></script>
+  <script src="js/ui/shop_modal.js"></script>
+  <script src="js/engine/loop.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
